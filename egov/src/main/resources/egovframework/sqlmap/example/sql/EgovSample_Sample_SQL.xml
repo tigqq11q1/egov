@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.sample.service.impl.SampleMapper">
+
+
+	 <select id="selectSampleListCnt" parameterType="sampleVO" resultType="Integer">
+		SELECT COUNT(*) FROM egov.MEMBER  
+		WHERE 1 = 1
+		<if test='search_name != null and search_name != " " '>
+			AND NAME LIKE '%'||#{search_name,jdbcType=VARCHAR}||'%'
+		</if>
+	</select>   
+	
+
+	<select id="selectSampleList" parameterType="sampleVO" resultType="egovMap">
+		SELECT X.*
+		     , (TOT_CNT - RUNM + 1) AS NO  
+		FROM (
+			SELECT NAME
+			     , AGE
+			     , INFO
+			     , BDAY
+			     , TO_CHAR(JOIN_DATE,'YYYYMMDD') AS JOIN_DATE
+			     , CASE GENDER WHEN '1' THEN '남' WHEN '2' THEN '여' END AS GENDER
+			     , M_NO
+			     , ROW_NUMBER() OVER(ORDER BY T1.JOIN_DATE DESC, T1.M_NO DESC) AS RUNM
+			     , NVL(#{totalRecordCount},0) AS TOT_CNT 
+			  FROM egov.MEMBER T1
+			 WHERE 1 = 1
+				<if test='search_name != null and search_name != " " '>
+					AND T1.NAME LIKE '%'||#{search_name,jdbcType=VARCHAR}||'%'
+				</if>
+			  )X
+			WHERE X.RUNM BETWEEN((#{pageIndex} - 1) *(#{recordCountPerPage} + 1)) AND (#{pageIndex} * #{recordCountPerPage}) 
+	</select>
+	
+	<insert id="insertSample" parameterType="SampleVO">
+	
+		<selectKey keyProperty="mNo" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(M_NO),0) + 1
+			  FROM egov.MEMBER
+		</selectKey>
+		 
+		INSERT INTO MEMBER(
+			    NAME
+		      , AGE
+		      , INFO
+		      , BDAY
+			  , GENDER
+			  , JOIN_DATE
+			  , M_NO
+		)VALUES(
+			   #{name,jdbcType=VARCHAR}
+			  ,#{age,jdbcType=VARCHAR}
+			  ,#{info,jdbcType=VARCHAR}
+			  ,#{bday,jdbcType=VARCHAR}
+			  ,#{gender,jdbcType=VARCHAR}
+			  , SYSDATE
+			  ,#{mNo,jdbcType=INTEGER}
+		)
+		
+	</insert>
+	
+	<select id="selectSampleNo" parameterType="SampleVO" resultType="SampleVO">
+		SELECT  NAME
+		      , AGE
+		      , INFO
+		      , BDAY
+		      , TO_CHAR(JOIN_DATE,'YYYYMMDD') AS JOINDATE
+		      , CASE GENDER WHEN '1' THEN '남' WHEN '2' THEN '여' END AS GENDER
+		      , M_NO AS NO
+		  FROM egov.MEMBER
+		  WHERE M_NO = #{mNo}
+	</select>
+	
+	<update id="updateSample" parameterType="SampleVO">
+		UPDATE egov.MEMBER 
+			SET 
+			<trim prefixOverrides=",">
+				<if test = 'name != null and name != ""'>
+				,	NAME = #{name,jdbcType=VARCHAR}
+				</if>
+				<if test = 'age != null and age != ""'>
+				,	AGE = #{age,jdbcType=VARCHAR}
+				</if>
+				<if test = 'info != null and info != ""'>
+				,	INFO = #{info,jdbcType=VARCHAR}
+				</if>
+				<if test = 'bday != null and bday != ""'>
+				,	BDAY = #{bday,jdbcType=VARCHAR}
+				</if>
+				<if test = 'gender != null and gender != ""'>
+				,	GENDER = #{gender,jdbcType=VARCHAR}
+				</if>
+			</trim>
+			 
+			 WHERE 1 = 1
+			 AND M_NO = #{mNo,jdbcType=INTEGER}
+	
+	</update>
+	
+	<delete id ="deletetSample" parameterType="int">
+		DELETE FROM egov.MEMBER 
+		WHERE M_NO = #{mNo}
+	</delete>
+</mapper>
