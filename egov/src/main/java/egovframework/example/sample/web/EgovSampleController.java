@@ -94,16 +94,16 @@ public class EgovSampleController {
 		vo.setLastIndex(paginationInfo.getLastRecordIndex());
 		vo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-		int listCnt = service.selectSampleListCnt(vo);
-		paginationInfo.setTotalRecordCount(listCnt);
+	//	int listCnt = service.selectSampleListCnt(vo);
+	//	paginationInfo.setTotalRecordCount(listCnt);
 			
-		vo.setTotalRecordCount(listCnt);
+	//	vo.setTotalRecordCount(listCnt);
 		model.addAttribute("search_name",search_name);
 		model.addAttribute("list",service.selectSampleList(vo));
 		model.addAttribute("paginationInfo", paginationInfo);
 		return "sample/list";
 	}
-	
+/*	
 	@RequestMapping(value="/add.do",method = RequestMethod.GET)
 	public  String add(@ModelAttribute SampleVO vo,ModelMap model)throws Exception{
 		model.addAttribute("list",service.selectSampleList(vo));
@@ -206,5 +206,5 @@ public class EgovSampleController {
 		}
 		json.putAll(resultMap);
 		return json;
-	}
+	}*/
 }

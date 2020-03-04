@@ -41,7 +41,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 public interface SampleMapper {
 
 	List<SampleVO> selectSampleList(SampleVO vo)throws Exception;
-
+/*
 	int selectSampleListCnt(SampleVO vo)throws Exception;
 
 	int insertSample(SampleVO vo)throws Exception;
@@ -50,7 +50,7 @@ public interface SampleMapper {
 
 	int updateSample(SampleVO vo)throws Exception;
 
-	int deletetSample(int empno)throws Exception;
+	int deletetSample(int empno)throws Exception;*/
 
 
 }

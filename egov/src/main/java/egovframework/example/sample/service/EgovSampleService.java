@@ -38,7 +38,7 @@ public interface EgovSampleService {
 
 	List<SampleVO> selectSampleList(SampleVO vo) throws Exception;
 
-	int selectSampleListCnt(SampleVO vo) throws Exception;
+/*	int selectSampleListCnt(SampleVO vo) throws Exception;
 
 	int insertSampleList(SampleVO vo) throws Exception;
 
@@ -47,6 +47,6 @@ public interface EgovSampleService {
 	int updateSample(SampleVO vo)throws Exception;
 
 	int deletetSample(ArrayList<Integer> deleteArray)throws Exception;
-
+*/
 
 }

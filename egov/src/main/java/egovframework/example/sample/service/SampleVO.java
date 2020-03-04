@@ -38,17 +38,48 @@ public class SampleVO extends SampleDefaultVO {
 	private static final long serialVersionUID = 1L;
 
 	private Integer mNo;
+	private String typeGubun;
+	private String service;
 	private String name;
-	private String age;
-	private String info;
-	private Integer bday;
-	private String gender;
-	private String joinDate;
+	private String birthDay;
+	private String id;
+	private String email;
+	private String translation;
+	private String staff;
+	private String regDate;
+	/**검색조건 */
+	private String searchCondition;
+	private String searchKeyword;
+	
+	public String getSearchCondition() {
+		return searchCondition;
+	}
+	public void setSearchCondition(String searchCondition) {
+		this.searchCondition = searchCondition;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
 	public Integer getmNo() {
 		return mNo;
 	}
 	public void setmNo(Integer mNo) {
 		this.mNo = mNo;
+	}
+	public String getTypeGubun() {
+		return typeGubun;
+	}
+	public void setTypeGubun(String typeGubun) {
+		this.typeGubun = typeGubun;
+	}
+	public String getService() {
+		return service;
+	}
+	public void setService(String service) {
+		this.service = service;
 	}
 	public String getName() {
 		return name;
@@ -56,36 +87,52 @@ public class SampleVO extends SampleDefaultVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAge() {
-		return age;
+	public String getBirthDay() {
+		return birthDay;
 	}
-	public void setAge(String age) {
-		this.age = age;
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
 	}
-	public String getInfo() {
-		return info;
+	public String getId() {
+		return id;
 	}
-	public void setInfo(String info) {
-		this.info = info;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getTranslation() {
+		return translation;
+	}
+	public void setTranslation(String translation) {
+		this.translation = translation;
+	}
+	public String getStaff() {
+		return staff;
+	}
+	public void setStaff(String staff) {
+		this.staff = staff;
+	}
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
-	public Integer getBday() {
-		return bday;
-	}
-	public void setBday(Integer bday) {
-		this.bday = bday;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public String getJoinDate() {
-		return joinDate;
-	}
-	public void setJoinDate(String joinDate) {
-		this.joinDate = joinDate;
+	@Override
+	public String toString() {
+		return "SampleVO [mNo=" + mNo + ", typeGubun=" + typeGubun + ", service=" + service + ", name=" + name
+				+ ", birthDay=" + birthDay + ", id=" + id + ", email=" + email + ", translation=" + translation
+				+ ", staff=" + staff + ", regDate=" + regDate + ", searchCondition=" + searchCondition
+				+ ", searchKeyword=" + searchKeyword + "]";
 	}
 	
 	

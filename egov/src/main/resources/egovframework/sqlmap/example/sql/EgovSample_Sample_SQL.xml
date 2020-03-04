@@ -2,8 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.example.sample.service.impl.SampleMapper">
 
-
-	 <select id="selectSampleListCnt" parameterType="sampleVO" resultType="Integer">
+	<select id="selectSampleList" parameterType="sampleVO" resultType="egovMap">
+		SELECT
+	           M_NO
+		     , TYPE_GUBUN
+             , CASE WHEN TYPE_GUBUN = 'B' THEN '번역봉사자'
+                    WHEN TYPE_GUBUN = 'N' THEN '일반'
+                    WHEN TYPE_GUBUN = 'S' THEN '신청 일시중지'
+                    WHEN TYPE_GUBUN = 'P' THEN '페널티 일시중지'
+                    WHEN TYPE_GUBUN = 'K' THEN '기관방문'
+                END AS TYPE_GUBUN_NM
+		     , SERVICE
+             ,CASE WHEN SERVICE = 'Y' THEN '열매'
+                   WHEN SERVICE = 'S' THEN '새싹'
+                END AS SERVICE_NM
+		     , NAME
+		     , BIRTH_DAY
+		     , ID
+		     , EMAIL
+		     , TRANSLATION
+		     , STAFF
+		     , REG_DATE
+		FROM MEMBER
+	   WHERE 1=1
+    </select>
+	<!--  <select id="selectSampleListCnt" parameterType="sampleVO" resultType="Integer">
 		SELECT COUNT(*) FROM egov.MEMBER  
 		WHERE 1 = 1
 		<if test='search_name != null and search_name != " " '>
@@ -33,8 +56,8 @@
 			  )X
 			WHERE X.RUNM BETWEEN((#{pageIndex} - 1) *(#{recordCountPerPage} + 1)) AND (#{pageIndex} * #{recordCountPerPage}) 
 	</select>
-	
-	<insert id="insertSample" parameterType="SampleVO">
+	 -->
+	<!-- <insert id="insertSample" parameterType="SampleVO">
 	
 		<selectKey keyProperty="mNo" resultType="int" order="BEFORE">
 			SELECT NVL(MAX(M_NO),0) + 1
@@ -102,5 +125,5 @@
 	<delete id ="deletetSample" parameterType="int">
 		DELETE FROM egov.MEMBER 
 		WHERE M_NO = #{mNo}
-	</delete>
+	</delete> -->
 </mapper>

@@ -65,7 +65,7 @@ public class EgovSampleServiceImpl extends EgovAbstractServiceImpl implements Eg
 		List<SampleVO> result = mapper.selectSampleList(vo);
 		return result;
 	}
-	@Override
+	/*@Override
 	public int selectSampleListCnt(SampleVO vo) throws Exception {
 		int result = mapper.selectSampleListCnt(vo);
 		return result;
@@ -98,7 +98,7 @@ public class EgovSampleServiceImpl extends EgovAbstractServiceImpl implements Eg
 		}
 		return result;
 
-	}
+	}*/
 
 	
 }

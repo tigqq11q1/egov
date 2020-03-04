@@ -3,170 +3,159 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>템플릿</title>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  </head>
-  <script>
+<%
+  /**
+  * @Class Name : egovSampleList.jsp
+  * @Description : Sample List 화면
+  * @Modification Information
+  *
+  *   수정일         수정자                   수정내용
+  *  -------    --------    ---------------------------
+  *  2009.02.01            최초 생성
+  *
+  * author 실행환경 개발팀
+  * since 2009.02.01
+  *
+  * Copyright (C) 2009 by MOPAS  All right reserved.
+  */
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><spring:message code="title.sample" /></title>
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
+    <script type="text/javaScript" language="javascript" defer="defer">
+        <!--
+        /* 글 수정 화면 function */
+        function fn_egov_select(id) {
+        	document.listForm.selectedId.value = id;
+           	document.listForm.action = "<c:url value='/updateSampleView.do'/>";
+           	document.listForm.submit();
+        }
+        
+        /* 글 등록 화면 function */
+        function fn_egov_addView() {
+           	document.listForm.action = "<c:url value='/addSample.do'/>";
+           	document.listForm.submit();
+        }
+        
+        /* 글 목록 화면 function */
+        function fn_egov_selectList() {
+        	document.listForm.action = "<c:url value='/egovSampleList.do'/>";
+           	document.listForm.submit();
+        }
+        
+        /* pagination 페이지 링크 function */
+        function fn_egov_link_page(pageNo){
+        	document.listForm.pageIndex.value = pageNo;
+        	document.listForm.action = "<c:url value='/egovSampleList.do'/>";
+           	document.listForm.submit();
+        }
+        
+        //-->
+    </script>
+</head>
 
-	$(document).ready(function(){
-		
-	});
-	function fn_page(pageIndex){
-		var test = $("#search_name").val();
-		location.href = "<c:url value='/list.do?pageIndex="+pageIndex+"&search_name="+test+"'/>" 
-	}
-	function fn_goAdd(){
-		 location.href = "<c:url value='/add.do'/>" 
-	}
-	// 1.모두 체크
-	  function allChk(obj){
-	      var chkObj = document.getElementsByName("chk");
-	      var rowCnt = chkObj.length - 1;
-	      var check = obj.checked;
-	      if (check) {﻿
-	          for (var i=0; i<=rowCnt; i++){
-	           if(chkObj[i].type == "checkbox")
-	               chkObj[i].checked = true;
-	          }
-	      } else {
-	          for (var i=0; i<=rowCnt; i++) {
-	           if(chkObj[i].type == "checkbox"){
-	               chkObj[i].checked = false;
-	           }
-	          }
-	      }
-	  } 
-
-	﻿ ﻿ //체크 삭제 
-	function fn_userDel(){
-		
-		var memberChk = document.getElementsByName("chk");
-		var chked = false;
-		var indexid = false;
-		var checkArray = new Array(); 
-		for(i = 0; i <memberChk.length; i++){
-			if(memberChk[i].checked){
-				checkArray.push(memberChk[i].value);
-				indexid = true;
-			}
-		}
-		
-		if(!indexid){
-			alert("삭제할 사용자를 체크하세요");
-			return;
-		}
-		var agree = confirm("삭제하시겠습니까");
-		
-		if(agree){
-			$.ajax({
-				type:"POST",
-				url:"<c:url value='delAjax.do'/>",
-				data :{checkArray : checkArray},
-				async: false,
-				success:function(data){
-					alert("삭제되었습니다.");
-					location.href = "<c:url value='list.do'/>" 
-				}
-			});
-		}
-	}
-	
-	function fn_goView(mNo){
-		location.href = "<c:url value='/view.do?mNo="+mNo+"'/>"
-	}
-	
-</script>
-  <body>
-  	<div class="panel panel-default">
-		<div>
-		<!--검색  -->
-		 <form id="searchForm">
-		 	<input type="hidden" name ="pageIndex" id="pageIndex" value='<c:out value="${empty param.pageIndex ? 1 : param.pageIndex}"/>'>
-		 	<fieldset>
-		 		<legend>
-		 			<table class="table">
-		 				<colgroup>
-		 					<col style="width:100px"/>
-		 					<col style="width:100px"/>
-		 					<col style="width:100px"/>
-							</col>
-							<col style="width:100px"/>
-		 				</colgroup>
-		 			
-		 				<tbody class="table table-striped">
-		 					<tr>
-		 						<th scope="row">검색폼 위치</th>
-		 					<td><input type="text"id="search_name"name="search_name" value="${param.search_name }"/></td>
-		 						<td>
-		 						 	 <input type="submit"value="검색">  
-		 					<!--	<a href ="javacript:void(0);" onclick ="fn_search();">조회</a>-->
-		 						</td>
-		 					</tr>
-		 				</tbody>
-		 			</table>
-		 		</legend>
-		 	
-		 	</fieldset>
-		 </form>
-	</div>
-	<!-- //검색 -->
-	
-	<div>
-		<p>게시글수 : <c:out value="${paginationInfo.totalRecordCount }"/>건</p>
-		<input type="button" class="btn btn-primary" onclick ="fn_goAdd()" value="add"/>
-		<input type="button" class="btn btn-danger" onclick ="fn_userDel()" value="del"/>
-	</div>
-	<table class="table-bordered">
-		<colgroup>
-			<%-- <col width="10%">
-			<col width="10%">
-			<col width="13%">
-			<col width="10%">
-			<col width="10%">
-			<col width="13%"> --%>
-		</colgroup>
-		<thead>
-		<tr>
-			<th><input type="checkbox" id="chkAll" name="chkAll" onclick="allChk(this);"/></th>
-			<th scope="col">NO</th>
-			<th scope="col">고유번호</th>
-			<th scope="col">이름</th>
-			<th scope="col">성별</th>
-			<th scope="col">나이</th>
-			<th scope="col">가입일</th>
-		</tr>
-		</thead>
-		
-		<tbody>
-			<c:forEach items="${list}" var ="data" varStatus="status">
-			<tr>
-				<td><input type="checkbox" id="chk" name="chk" value="${data.mNo}" /></td>
-				<td><c:out value="${data.no}"/></td>
-				<td onclick="fn_goView('${data.mNo}')" style="cursor:pointer;" ><c:out value="${data.mNo }"/></td>
-				<td><c:out value="${data.name }"/></td>
-				<td><c:out value="${data.gender }"/></td>
-				<td><c:out value="${data.age }"/></td>
-				<td><c:out value="${data.joinDate }"/></td>		
-			</tr>
-			</c:forEach>
-		
-			<c:if test="${empty list }">
-			<tr>
-				<td colspan="6" >data null</td>	
-			</tr>
-			</c:if>		
-		</tbody>
-	</table>
-	<!-- /List -->
-       	<div id="paging">
-        	<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_page" />
-      	</div> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  </body>
+<body style="text-align:center; margin:0 auto; display:inline; padding-top:100px;">
+    <form:form commandName="sampleVO" id="listForm" name="listForm" method="post">
+        <input type="hidden" name="selectedId" />
+        <div id="content_pop">
+        	<!-- 타이틀 -->
+        	<div id="title">
+        		<ul>
+        			<li><img src="<c:url value='/images/egovframework/example/title_dot.gif'/>" alt=""/><spring:message code="list.sample" /></li>
+        		</ul>
+        	</div>
+        	<!-- // 타이틀 -->
+        	<div id="search">
+        		<ul>
+        			<li>
+        			    <label for="searchCondition" style="visibility:hidden;"><spring:message code="search.choose" /></label>
+        				<form:select path="searchCondition" cssClass="use">
+        					<form:option value="1" label="Name" />
+        					<form:option value="0" label="ID" />
+        				</form:select>
+        			</li>
+        			<li><label for="searchKeyword" style="visibility:hidden;display:none;"><spring:message code="search.keyword" /></label>
+                        <form:input path="searchKeyword" cssClass="txt"/>
+                    </li>
+        			<li>
+        	            <span class="btn_blue_l">
+        	                <a href="javascript:fn_egov_selectList();"><spring:message code="button.search" /></a>
+        	                <img src="<c:url value='/images/egovframework/example/btn_bg_r.gif'/>" style="margin-left:6px;" alt=""/>
+        	            </span>
+        	        </li>
+                </ul>
+        	</div>
+        	<!-- List -->
+        	<div id="table">
+        		<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블">
+        			<caption style="visibility:hidden">카테고리ID, 케테고리명, 사용여부, Description, 등록자 표시하는 테이블</caption>
+        			<colgroup>
+        				<col width="40"/>
+        				<col width="100"/>
+        				<col width="150"/>
+        				<col width="80"/>
+    					<col width="80"/>
+    					<col width="80"/>
+    					<col width="80"/>
+    					<col width="80"/>
+    					<col width="80"/>
+        				<col width="?"/>
+        				<col width="60"/>
+        			</colgroup>
+        			<tr>
+        				<th align="center">No</th>
+        				<th align="center">유형구분</th>
+        				<th align="center">봉사단계</th>
+        				<th align="center">이름</th>
+        				<th align="center">생년월일</th>
+        				<th align="center">아이디</th>
+        				<th align="center">이메일</th>
+	        			<th align="center">번역구분</th>
+	        			<th align="center">담당직원</th>
+	        			<th align="center">가입일</th>
+        			</tr>
+        			<c:forEach var="data" items="${list}" varStatus="status">
+            			<tr>
+            			<%-- 	<td align="center" class="listtd"><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/> </td>--%>
+            				<td align="center"><c:out value="${status.count}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.typeGubun}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.service}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.name}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.birthDay}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.id}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.email}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.translation}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.staff}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.regDate}"/>&nbsp;</td>
+            			<%-- 	
+            				<td align="center" class="listtd"><a href="javascript:fn_egov_select('<c:out value="${data.id}"/>')"><c:out value="${data.id}"/></a></td>
+            				<td align="left" class="listtd"><c:out value="${data.name}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${data.useYn}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${data.description}"/>&nbsp;</td>
+            				<td align="center" class="listtd"><c:out value="${data.regUser}"/>&nbsp;</td> --%>
+            			</tr>
+        			</c:forEach>
+        		</table>
+        	</div>
+        	<!-- /List 
+        	<div id="paging">
+        		<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_link_page" />
+        		<form:hidden path="pageIndex" />
+        	</div>-->
+        	<div id="sysbtn">
+        	  <ul>
+        	      <li>
+        	          <span class="btn_blue_l">
+        	              <a href="javascript:fn_egov_addView();"><spring:message code="button.create" /></a>
+                          <img src="<c:url value='/images/egovframework/example/btn_bg_r.gif'/>" style="margin-left:6px;" alt=""/>
+                      </span>
+                  </li>
+              </ul>
+        	</div>
+        </div>
+    </form:form>
+</body>
 </html>
