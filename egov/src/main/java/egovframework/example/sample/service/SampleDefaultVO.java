@@ -47,11 +47,14 @@ public class SampleDefaultVO implements Serializable {
 	/** 검색Keyword */
 	private String searchKeyword = "";
 
+	
 	/** 검색사용여부 */
 	private String searchUseYn = "";
 
 	/** 현재페이지 */
 	private int pageIndex = 1;
+
+
 
 	/** 페이지갯수 */
 	private int pageUnit = 10;
@@ -77,7 +80,6 @@ public class SampleDefaultVO implements Serializable {
 	
 	private String search_gender;
 
-	private String search_name;
 	public String getSearch_gender() {
 		return search_gender;
 	}
@@ -86,13 +88,7 @@ public class SampleDefaultVO implements Serializable {
 		this.search_gender = search_gender;
 	}
 
-	public String getSearch_name() {
-		return search_name;
-	}
 
-	public void setSearch_name(String search_name) {
-		this.search_name = search_name;
-	}
 
 	/**등록자 이름 */
 	private String regNm;
@@ -121,7 +117,7 @@ public class SampleDefaultVO implements Serializable {
 	public void setRecordCountPerPage(int recordCountPerPage) {
 		this.recordCountPerPage = recordCountPerPage;
 	}
-
+	
 	public String getSearchCondition() {
 		return searchCondition;
 	}

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.example.sample.service.EgovSampleService;
+import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.example.sample.service.SampleVO;
 
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -79,8 +80,8 @@ public class EgovSampleController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/list.do")
-	public String selectSampleList(@ModelAttribute SampleVO vo, ModelMap model
-			,@RequestParam(value="search_name",required=false) String search_name) throws Exception {
+	public String selectSampleList(@ModelAttribute("searchVO") SampleVO vo, ModelMap model) throws Exception {
+			
 	
 		vo.setPageUnit(propertiesService.getInt("pageUnit"));
 		vo.setPageSize(propertiesService.getInt("pageSize"));
@@ -98,7 +99,6 @@ public class EgovSampleController {
 	//	paginationInfo.setTotalRecordCount(listCnt);
 			
 	//	vo.setTotalRecordCount(listCnt);
-		model.addAttribute("search_name",search_name);
 		model.addAttribute("list",service.selectSampleList(vo));
 		model.addAttribute("paginationInfo", paginationInfo);
 		return "sample/list";

@@ -47,21 +47,13 @@ public class SampleVO extends SampleDefaultVO {
 	private String translation;
 	private String staff;
 	private String regDate;
-	/**검색조건 */
-	private String searchCondition;
-	private String searchKeyword;
-	
-	public String getSearchCondition() {
-		return searchCondition;
+	private String searchName = "";
+	public String getSearchName() {
+		return searchName;
 	}
-	public void setSearchCondition(String searchCondition) {
-		this.searchCondition = searchCondition;
-	}
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
+
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
 	}
 	public Integer getmNo() {
 		return mNo;
@@ -126,15 +118,12 @@ public class SampleVO extends SampleDefaultVO {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
 	@Override
 	public String toString() {
 		return "SampleVO [mNo=" + mNo + ", typeGubun=" + typeGubun + ", service=" + service + ", name=" + name
 				+ ", birthDay=" + birthDay + ", id=" + id + ", email=" + email + ", translation=" + translation
-				+ ", staff=" + staff + ", regDate=" + regDate + ", searchCondition=" + searchCondition
-				+ ", searchKeyword=" + searchKeyword + "]";
+				+ ", staff=" + staff + ", regDate=" + regDate + "]";
 	}
-	
 	
 
 	

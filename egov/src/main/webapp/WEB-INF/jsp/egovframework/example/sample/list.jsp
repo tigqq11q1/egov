@@ -26,6 +26,10 @@
     <title><spring:message code="title.sample" /></title>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
     <script type="text/javaScript" language="javascript" defer="defer">
+    
+    function fn_searchCondition(){
+    	alert(1)
+    }
         <!--
         /* 글 수정 화면 function */
         function fn_egov_select(id) {
@@ -69,16 +73,46 @@
         	</div>
         	<!-- // 타이틀 -->
         	<div id="search">
+        	
         		<ul>
+        		<li>
+        		<label for="searchCondition" style="visibility:hidden;"><spring:message code="search.choose" /></label>
+        				<form:select path="searchCondition" cssClass="use" onchange="fn_searchCondition()">
+        					<form:option value="" label="전체" />
+        					<form:option value="B" label="번역봉사" />
+        					<form:option value="K" label="기관방문" />
+        					<form:option value="N" label="일반" />
+        					<form:option value="S" label="신청 일시중지 " />
+        					<form:option value="P" label="페널티 일시중지" />
+        					<form:option value="J" label="직원 일시중지" />
+        					<form:option value="H" label="활동제테스트" />
+        				</form:select>
+        		</li>
+        		<li>
+        			    <label for="searchKeyword" style="visibility:hidden;"><spring:message code="search.choose" /></label>
+        				<form:select path="searchKeyword" cssClass="use">
+        					<form:option value="G" label="새싹" />
+        					<form:option value="Y" label="열매" />
+        				</form:select>
+        		</li>
+        		<li>	
+        			    <label for="searchKeyword" style="visibility:hidden;"><spring:message code="search.choose" /></label>
+        				<form:select path="searchKeyword" cssClass="use">
+        					<form:option value="" label="모두" />
+        					<form:option value="I" label="아동서신" />
+        					<form:option value="H" label="후원자서신" />
+        				</form:select>
+        		</li>
         			<li>
-        			    <label for="searchCondition" style="visibility:hidden;"><spring:message code="search.choose" /></label>
-        				<form:select path="searchCondition" cssClass="use">
-        					<form:option value="1" label="Name" />
-        					<form:option value="0" label="ID" />
+        			    <label for="searchName" style="visibility:hidden;"><spring:message code="search.choose" /></label>
+        				<form:select path="" cssClass="use">
+        					<form:option value="NAME" label="이름" />
+        					<form:option value="ID" label="ID" />
+        					<form:option value="EMAIL" label="EMAIL" />
         				</form:select>
         			</li>
-        			<li><label for="searchKeyword" style="visibility:hidden;display:none;"><spring:message code="search.keyword" /></label>
-                        <form:input path="searchKeyword" cssClass="txt"/>
+        			<li><label for="searchName" style="visibility:hidden;display:none;"><spring:message code="search.keyword" /></label>
+                        <form:input path="" cssClass="txt"/>
                     </li>
         			<li>
         	            <span class="btn_blue_l">
@@ -119,10 +153,10 @@
         			</tr>
         			<c:forEach var="data" items="${list}" varStatus="status">
             			<tr>
-            			<%-- 	<td align="center" class="listtd"><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/> </td>--%>
+            		 <%-- 	<td align="center" class="listtd"><c:out value="${paginationInfo.totalRecordCount+1 - ((searchVO.pageIndex-1) * searchVO.pageSize + status.count)}"/> </td> --%>
             				<td align="center"><c:out value="${status.count}"/>&nbsp;</td>
-            				<td align="center"><c:out value="${data.typeGubun}"/>&nbsp;</td>
-            				<td align="center"><c:out value="${data.service}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.typeGubunNm}"/>&nbsp;</td>
+            				<td align="center"><c:out value="${data.serviceNm}"/>&nbsp;</td>
             				<td align="center"><c:out value="${data.name}"/>&nbsp;</td>
             				<td align="center"><c:out value="${data.birthDay}"/>&nbsp;</td>
             				<td align="center"><c:out value="${data.id}"/>&nbsp;</td>
