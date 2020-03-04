@@ -25,6 +25,9 @@
 		     , REG_DATE
 		FROM MEMBER
 	   WHERE 1=1
+	   	<if test='searchCondition != null and searchCondition != " " '>
+			AND TYPE_GUBUN LIKE '%'||#{searchCondition,jdbcType=VARCHAR}||'%'
+		</if>
     </select>
 	<!--  <select id="selectSampleListCnt" parameterType="sampleVO" resultType="Integer">
 		SELECT COUNT(*) FROM egov.MEMBER  

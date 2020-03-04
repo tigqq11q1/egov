@@ -25,11 +25,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><spring:message code="title.sample" /></title>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javaScript" language="javascript" defer="defer">
     
     function fn_searchCondition(){
-    	alert(1)
+    	alert( $("#searchCondition").val())
+       	document.listForm.action = "<c:url value='/list.do'/>"
+       	document.listForm.submit(); 
     }
+
+
         <!--
         /* 글 수정 화면 function */
         function fn_egov_select(id) {
