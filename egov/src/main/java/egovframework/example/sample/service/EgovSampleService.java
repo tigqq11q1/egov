@@ -18,6 +18,8 @@ package egovframework.example.sample.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * @Class Name : EgovSampleService.java
  * @Description : EgovSampleService Class
@@ -37,17 +39,34 @@ import java.util.List;
 public interface EgovSampleService {
 
 	List<SampleVO> selectSampleList(SampleVO vo) throws Exception;
+	
+	int selectSampleListCnt(SampleVO vo) throws Exception;
 
+	/**
+	 * 사원 상세 조회
+	 * @param memberno - 조회할 사원 번호
+	 * @return SampleVO - 사원 상세 정보
+	 * @exception Exception
+	 */
+	SampleVO selectSampleView(SampleVO sampleVO) throws Exception;
+	
+	/**등록*/
+	int selectSampleAdd(SampleVO sampleVO) throws Exception;
 
-/*	int selectSampleListCnt(SampleVO vo) throws Exception;
+	int updateSample(SampleVO sampleVO) throws Exception;
 
-	int insertSampleList(SampleVO vo) throws Exception;
+	int deleteSample(SampleVO sampleVO)throws Exception;
+	
+	
+/*	
+
+	
 
 	SampleVO selectSampleNo(SampleVO vo) throws Exception;
 
 	int updateSample(SampleVO vo)throws Exception;
 
-	int deletetSample(ArrayList<Integer> deleteArray)throws Exception;
+	
 */
 
 }

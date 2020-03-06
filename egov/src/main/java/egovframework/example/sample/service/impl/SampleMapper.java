@@ -40,17 +40,33 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 @Mapper("sampleMapper")
 public interface SampleMapper {
 
-	List<SampleVO> selectSampleList(SampleVO vo)throws Exception;
-/*
-	int selectSampleListCnt(SampleVO vo)throws Exception;
+	List<SampleVO> selectSampleList(SampleVO vo) throws Exception;
+	
+	int selectSampleListCnt(SampleVO vo) throws Exception;
+	
+	/**
+	 * 사원 상세 조회
+	 * @param memberno - 조회할 사원 번호
+	 * @return SampleVO - 사원 상세 정보
+	 * @exception Exception
+	 */
+	SampleVO selectSampleView(SampleVO sampleVO) throws Exception;
+	
+	/**등록*/
+	int selectSampleAdd(SampleVO sampleVO) throws Exception;
 
-	int insertSample(SampleVO vo)throws Exception;
+	int updateSample(SampleVO sampleVO) throws Exception;
+	
+	int deletetSample(SampleVO sampleVO)throws Exception;
+/*
+
 
 	SampleVO selectSampleNo(SampleVO vo)throws Exception;
 
 	int updateSample(SampleVO vo)throws Exception;
 
-	int deletetSample(int empno)throws Exception;*/
+	int deletetSample(int empno)throws Exception;
+*/
 
 
 }

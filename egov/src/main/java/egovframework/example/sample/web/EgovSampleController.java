@@ -15,30 +15,26 @@
  */
 package egovframework.example.sample.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import egovframework.example.sample.service.EgovSampleService;
-import egovframework.example.sample.service.SampleDefaultVO;
-import egovframework.example.sample.service.SampleVO;
-
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 
-import org.json.simple.JSONObject;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springmodules.validation.commons.DefaultBeanValidator;
+
+import egovframework.example.sample.service.EgovSampleService;
+import egovframework.example.sample.service.SampleDefaultVO;
+import egovframework.example.sample.service.SampleVO;
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * @Class Name : EgovSampleController.java
@@ -62,7 +58,7 @@ public class EgovSampleController {
 
 	/** EgovSampleService */
 	@Resource(name = "sampleService")
-	private EgovSampleService service;
+	private EgovSampleService sampleService;
 
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
@@ -95,19 +91,104 @@ public class EgovSampleController {
 		vo.setLastIndex(paginationInfo.getLastRecordIndex());
 		vo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		
-	//	int listCnt = service.selectSampleListCnt(vo);
-	//	paginationInfo.setTotalRecordCount(listCnt);
-			
-	//	vo.setTotalRecordCount(listCnt);
-		model.addAttribute("list",service.selectSampleList(vo));
+		List<SampleVO> list = sampleService.selectSampleList(vo);
+		model.addAttribute("list", list);
+		
+		int listCnt = sampleService.selectSampleListCnt(vo);
+		paginationInfo.setTotalRecordCount(listCnt);
+		
 		model.addAttribute("paginationInfo", paginationInfo);
 		return "sample/list";
 	}
-/*	
-	@RequestMapping(value="/add.do",method = RequestMethod.GET)
+	
+	/**
+	 * 사원 상세 조회
+	 * @param memberno - 조회할 사원 번호
+	 * @param model
+	 * @return "view"
+	 * @exception Exception
+	 */
+	@RequestMapping(value="/view.do")
+	public String selectSampleView(@ModelAttribute("sampleVO") SampleVO sampleVO, ModelMap model) throws Exception {
+		System.out.println("-------------EgovSampleController/selectSampleview");
+		System.out.println("--------------sampleVO" + sampleVO.toString());
+		
+		SampleVO info = sampleService.selectSampleView(sampleVO);
+		model.addAttribute("info", info);
+
+		return "sample/view";
+	}
+	
+	@RequestMapping(value="/add.do")
+	public String selectSampleAdd(@ModelAttribute("searchVO") SampleDefaultVO searchVO, SampleVO sampleVO, ModelMap model) throws Exception {
+		System.out.println("-----------EgovSampleController/add.do");
+//		model.addAttribute("list",sampleService.selectSampleAdd(sampleVO));
+		return "sample/add";
+	}
+		
+	
+	/**
+	 * 글을 등록한다.
+	 * @param sampleVO - 등록할 정보가 담긴 VO
+	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
+	 * @param status
+	 * @return "forward:/egovSampleList.do"
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/addSample.do", method = RequestMethod.POST)
+	public String addSample(@ModelAttribute("searchVO") SampleDefaultVO searchVO, SampleVO sampleVO, BindingResult bindingResult, Model model, SessionStatus status)
+			throws Exception {
+		sampleService.selectSampleAdd(sampleVO);
+		status.setComplete();
+		return "forward:/list.do"; 
+	}
+	
+	/**
+	 * 글을 수정한다.
+	 * @param sampleVO - 수정할 정보가 담긴 VO
+	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
+	 * @param status
+	 * @return "forward:/egovSampleList.do"
+	 * @exception Exception
+	 */
+	@RequestMapping("/updateSample.do")
+	public String updateSample(@ModelAttribute("searchVO") SampleDefaultVO searchVO, SampleVO sampleVO, BindingResult bindingResult, Model model, SessionStatus status)
+			throws Exception {
+
+		beanValidator.validate(sampleVO, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("sampleVO", sampleVO);
+			return "sample/view";
+		}
+
+		sampleService.updateSample(sampleVO);
+		status.setComplete();
+		return "forward:/egovSampleList.do";
+	}
+	
+	/**
+	 * 글을 삭제한다.
+	 * @param sampleVO - 삭제할 정보가 담긴 VO
+	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
+	 * @param status
+	 * @return "forward:/egovSampleList.do"
+	 * @exception Exception
+	 */
+	@RequestMapping("/deleteSample.do")
+	public String deleteSample(@ModelAttribute("searchVO") SampleVO sampleVO, SampleDefaultVO searchVO, SessionStatus status) throws Exception {
+		sampleService.deleteSample(sampleVO);
+		status.setComplete();
+		return "forward:/egovSampleList.do";
+	}
+	
+		
+/*	@RequestMapping(value="/add.do",method = RequestMethod.GET)
 	public  String add(@ModelAttribute SampleVO vo,ModelMap model)throws Exception{
 		model.addAttribute("list",service.selectSampleList(vo));
-		return "sample/add";
+		return "sample/add";*/
+		
+/*
 	}
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/addAjax.do",method = RequestMethod.POST)
@@ -135,12 +216,6 @@ public class EgovSampleController {
 		}
 		json.putAll(resultMap);
 		return json;
-	}
-	
-	@RequestMapping(value="/view.do")
-	public String view(SampleVO vo,ModelMap model) throws Exception {
-		model.addAttribute("view",service.selectSampleNo(vo));
-		return "sample/view";
 	}
 	
 	@RequestMapping(value="/edit.do")

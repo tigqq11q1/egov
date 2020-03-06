@@ -3,6 +3,8 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+ <!-- 든이 샘플 -->
 <!DOCTYPE html>
 <html lang="ko">
   <head>

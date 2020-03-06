@@ -54,10 +54,8 @@ public class SampleDefaultVO implements Serializable {
 	/** 현재페이지 */
 	private int pageIndex = 1;
 
-
-
 	/** 페이지갯수 */
-	private int pageUnit = 10;
+	private int pageUnit = 1;
 
 	/** 페이지사이즈 */
 	private int pageSize = 5;
@@ -69,7 +67,7 @@ public class SampleDefaultVO implements Serializable {
 	private int lastIndex = 1;
 
 	/** recordCountPerPage */
-	private int recordCountPerPage = 5;
+	private int recordCountPerPage = 1;
 	
 	protected int totalRecordCount;
 	

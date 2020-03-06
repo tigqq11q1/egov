@@ -1,43 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.example.sample.service.impl.SampleMapper">
-
-	<select id="selectSampleList" parameterType="sampleVO" resultType="egovMap">
-		SELECT
-	           M_NO
-		     , TYPE_GUBUN
-             , CASE WHEN TYPE_GUBUN = 'B' THEN '번역봉사자'
-                    WHEN TYPE_GUBUN = 'N' THEN '일반'
-                    WHEN TYPE_GUBUN = 'S' THEN '신청 일시중지'
-                    WHEN TYPE_GUBUN = 'P' THEN '페널티 일시중지'
-                    WHEN TYPE_GUBUN = 'K' THEN '기관방문'
-                END AS TYPE_GUBUN_NM
-		     , SERVICE
-             ,CASE WHEN SERVICE = 'Y' THEN '열매'
-                   WHEN SERVICE = 'S' THEN '새싹'
-                END AS SERVICE_NM
-		     , NAME
-		     , BIRTH_DAY
-		     , ID
-		     , EMAIL
-		     , TRANSLATION
-		     , STAFF
-		     , REG_DATE
-		FROM MEMBER
-	   WHERE 1=1
-	   	<if test='searchCondition != null and searchCondition != " " '>
-			AND TYPE_GUBUN LIKE '%'||#{searchCondition,jdbcType=VARCHAR}||'%'
-		</if>
+    
+	<!-- 사원 리스트 -->
+	<select id="selectSampleList" parameterType="SampleVO" resultType="egovMap">
+		
+	    SELECT T2.*
+	      FROM (
+	      	SELECT T1.*
+		      FROM (
+		      	SELECT ROW_NUMBER() OVER (ORDER BY MEMBERNO DESC) AS RNUM
+			         , MEMBERNO								/*사원번호*/
+			         , KNAME								/*한글이름*/
+			     	 , MYNUMBER1							/*주민번호앞자리*/
+			     	 , MYNUMBER2							/*주민번호뒷자리*/
+			     	 , GENDER								/*성별*/
+			     	 , CASE WHEN GENDER = '1' THEN '남자'	/*성별한글표기*/
+			     	 		ELSE '여자'
+			     	 	END AS GENDER_NM
+			     	 , STAT									/*기술등급*/
+			      	 , LIST_STAT							/*상태*/
+			     	 , WORK_YN								/*근무여부*/	
+			     	 , CASE WHEN WORK_YN = 'Y' THEN '근무'	/*근무여부한글표기*/
+			     	 	 	ELSE '퇴사'
+			        	END AS WORK_YN_NM
+			  	 FROM EMP
+		      ) T1
+	      ) T2
+	    WHERE T2.RNUM BETWEEN((#{pageIndex} - 1) * #{recordCountPerPage}) + 1 AND (#{pageIndex} * #{recordCountPerPage})
+	      
     </select>
-	<!--  <select id="selectSampleListCnt" parameterType="sampleVO" resultType="Integer">
-		SELECT COUNT(*) FROM egov.MEMBER  
-		WHERE 1 = 1
-		<if test='search_name != null and search_name != " " '>
-			AND NAME LIKE '%'||#{search_name,jdbcType=VARCHAR}||'%'
-		</if>
+    
+	<!-- 사원 리스트 수 -->
+	<select id="selectSampleListCnt" parameterType="SampleVO" resultType="Integer">
+		SELECT COUNT(*) AS CNT
+	  	  FROM EMP
 	</select>   
 	
-
+	
+	<!-- 사원 상세정보 -->
+	<select id="selectSampleView" parameterType="SampleVO" resultType="SampleVO">
+	    SELECT MEMBERNO 			/*사원번호*/
+		     , KNAME				/*한글이름*/
+		     , ENAME				/*영문이름*/
+		     , JNAME				/*한문이름*/
+		     , MYNUMBER1			/*주민번호앞자리*/
+		     , MYNUMBER2			/*주민번호뒷자리*/
+		     , ORIGINALFILENAME		/**/
+		     , PRESHORTFILENAME		/**/
+		     , YEAR					/*생년월일년*/
+		     , MONTH				/*생년월일월*/
+		     , DAY					/*생년월일일*/
+		     , CALENDAR				/*양력(1), 음력(2) 선택*/
+		     , GENDER				/*남자(1),여자(2)*/
+		     , WEDDING				/*기혼(1), 미혼(2)*/
+		     , CAREER				/*년차*/
+		     , MONEYTYPE			/*급여 지급유형*/
+		     , WORKINGTYPE			/*희망직무*/
+		     , WELCOME				/*입사유형*/
+		     , ADDRESS				/*우편번호*/
+		     , DETAILADDRESS		/*상세주소*/
+		     , PHONENUMBER1			/*연락처앞자리*/
+		     , PHONENUMBER2			/*연락처가운데자리*/
+		     , PHONENUMBER3			/*연락처뒷자리*/
+		     , EMAIL				/*이메일*/
+		     , STAT					/*기술등급*/
+		     , ALCHOL				/*주량*/
+		     , LIST_STAT			/*리스트상태*/
+		     , WORK_YN				/*근무정보*/
+		     , ORIGINALFILENAME AS FILENAME		/*파일명*/
+		     , PRESHORTFILENAME	AS FILE_PATH	/*파일경로*/
+		  FROM EMP
+		 WHERE MEMBERNO = #{memberno,jdbcType=INTEGER}
+	</select>
+	
+	<insert id="selectSampleAdd" parameterType="SampleVO">
+	    INSERT INTO EMP (
+		       MEMBERNO
+		     , KNAME
+		     , ENAME
+		     , JNAME
+		     , MYNUMBER1
+		     , MYNUMBER2
+		     , YEAR
+		     , MONTH
+		     , DAY
+		     , CALENDAR
+		     , GENDER
+		     , WEDDING
+		     , CAREER
+		     , MONEYTYPE
+		     , WORKINGTYPE
+		     , WELCOME
+		     , ADDRESS
+		     , DETAILADDRESS
+		     , PHONENUMBER1
+		     , PHONENUMBER2
+		     , PHONENUMBER3
+		     , EMAIL
+		     , STAT
+		     , ALCHOL
+		     , ORIGINALFILENAME		/*파일명*/
+		     , PRESHORTFILENAME		/*파일경로*/
+		    ) VALUES (
+		       EMP_SEQ.NEXTVAL
+		     , #{kname,jdbcType=VARCHAR}
+		     , #{ename,jdbcType=VARCHAR}
+		     , #{jname,jdbcType=VARCHAR}
+		     , #{mynumber1,jdbcType=VARCHAR}
+		     , #{mynumber2,jdbcType=VARCHAR}
+		     , #{year,jdbcType=VARCHAR}
+		     , #{month,jdbcType=VARCHAR}
+		     , #{day,jdbcType=VARCHAR}
+		     , #{calendar,jdbcType=VARCHAR}
+		     , #{gender,jdbcType=VARCHAR}
+		     , #{wedding,jdbcType=VARCHAR}
+		     , #{career,jdbcType=VARCHAR}
+		     , #{moneyType,jdbcType=VARCHAR}
+		     , #{workingType,jdbcType=VARCHAR}
+		     , #{welcome,jdbcType=VARCHAR}
+		     , #{address,jdbcType=VARCHAR}
+		     , #{detailAddress,jdbcType=VARCHAR}
+		     , #{phoneNumber1,jdbcType=VARCHAR}
+		     , #{phoneNumber2,jdbcType=VARCHAR}
+		     , #{phoneNumber3,jdbcType=VARCHAR}
+		     , #{email,jdbcType=VARCHAR}
+		     , #{stat,jdbcType=VARCHAR}
+		     , #{alchol,jdbcType=VARCHAR}
+		     , #{filename,jdbcType=VARCHAR}
+		     , #{filePath,jdbcType=VARCHAR}
+		   )
+	</insert>
+	
+	<update id="updateSample" parameterType="SampleVO">
+		UPDATE EMP
+			SET 
+			<trim prefixOverrides=",">
+				<if test = 'kname != null and kname != ""'>
+				,	KNAME = #{kname,jdbcType=VARCHAR}
+				</if>
+			</trim>
+			 WHERE 1 = 1
+			 AND MEMBERNO = #{memberno,jdbcType=INTEGER}
+	</update>
+	
+	<delete id ="deletetSample" parameterType="int">
+		DELETE FROM EMP
+		WHERE MEMBERNO = #{memberno,jdbcType=INTEGER}
+	</delete>
+<!-- 
 	<select id="selectSampleList" parameterType="sampleVO" resultType="egovMap">
 		SELECT X.*
 		     , (TOT_CNT - RUNM + 1) AS NO  
